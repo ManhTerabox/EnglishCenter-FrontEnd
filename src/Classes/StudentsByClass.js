@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Bar } from 'react-chartjs-2';
-import axios from 'axios';
-import DownloadPDF from '../helpers/DownloadPDF';
+import React, { Component } from "react";
+import { Bar } from "react-chartjs-2";
+import axios from "axios";
+import DownloadPDF from "../helpers/DownloadPDF";
 
 class StudentsByClass extends Component {
   state = {
@@ -9,7 +9,7 @@ class StudentsByClass extends Component {
       labels: [],
       datasets: [
         {
-          label: 'Number of Students',
+          label: "Number of Students",
           data: [],
           backgroundColor: [],
           borderColor: [],
@@ -27,39 +27,41 @@ class StudentsByClass extends Component {
           },
         ],
       },
-    }
+    },
   };
 
   componentDidMount = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/v1/students-by-class');
-      
+      const res = await axios.get(
+        "https://english-center.onrender.com/api/v1/students-by-class"
+      );
+
       this.generateBgColors(res.data.studentsByClass.length);
 
       let classes = this.state.data.labels.slice();
       let classCounts = this.state.data.datasets[0].data.slice();
 
-      res.data.studentsByClass.forEach(clas => {
+      res.data.studentsByClass.forEach((clas) => {
         classes = [...classes, clas.name];
         classCounts = [...classCounts, clas.count];
         this.setState({
           data: {
             ...this.state.data,
-            labels: classes, 
-            datasets:[
+            labels: classes,
+            datasets: [
               {
                 ...this.state.data.datasets[0],
-                data: classCounts
-              }
-            ]
-          }
+                data: classCounts,
+              },
+            ],
+          },
         });
       });
     } catch (error) {
       console.log(error);
-      alert('something went wrong, please try again later');
+      alert("something went wrong, please try again later");
     }
-  }
+  };
 
   generateBgColors = (i) => {
     let backgroundColors = this.state.data.datasets[0].backgroundColor.slice();
@@ -79,18 +81,18 @@ class StudentsByClass extends Component {
           {
             ...this.state.data.datasets[0],
             backgroundColor: backgroundColors,
-            borderColor: borderColors
-          }
-        ]
-      }
+            borderColor: borderColors,
+          },
+        ],
+      },
     });
-  }
+  };
 
   render() {
     return (
       <div id="report" className="report">
-        <div className='header'>
-          <h1 className='title'>Students By Class Report</h1>
+        <div className="header">
+          <h1 className="title">Students By Class Report</h1>
         </div>
         <DownloadPDF
           downloadFileName="Students by Class"

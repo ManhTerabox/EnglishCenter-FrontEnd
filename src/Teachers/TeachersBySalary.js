@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Bar } from 'react-chartjs-2';
-import axios from 'axios';
-import DownloadPDF from '../helpers/DownloadPDF';
+import React, { Component } from "react";
+import { Bar } from "react-chartjs-2";
+import axios from "axios";
+import DownloadPDF from "../helpers/DownloadPDF";
 
 class TeachersBySalary extends Component {
   state = {
@@ -9,7 +9,7 @@ class TeachersBySalary extends Component {
       labels: [],
       datasets: [
         {
-          label: '# of Teachers',
+          label: "# of Teachers",
           data: [],
           backgroundColor: [],
           borderColor: [],
@@ -27,39 +27,41 @@ class TeachersBySalary extends Component {
           },
         ],
       },
-    }
+    },
   };
 
   componentDidMount = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/v1//teachers-by-salary');
+      const res = await axios.get(
+        "https://english-center.onrender.com/api/v1//teachers-by-salary"
+      );
 
       this.generateBgColors(res.data.teachersBySalary.length);
 
       let salary = this.state.data.labels.slice();
       let salaryCounts = this.state.data.datasets[0].data.slice();
 
-      res.data.teachersBySalary.forEach(teacher => {
+      res.data.teachersBySalary.forEach((teacher) => {
         salary = [...salary, teacher._id];
         salaryCounts = [...salaryCounts, teacher.count];
         this.setState({
           data: {
             ...this.state.data,
-            labels: salary, 
-            datasets:[
+            labels: salary,
+            datasets: [
               {
                 ...this.state.data.datasets[0],
-                data: salaryCounts
-              }
-            ]
-          }
+                data: salaryCounts,
+              },
+            ],
+          },
         });
       });
     } catch (error) {
       console.log(error);
-      alert('something went wrong, please try again later');
+      alert("something went wrong, please try again later");
     }
-  }
+  };
 
   generateBgColors = (i) => {
     let backgroundColors = this.state.data.datasets[0].backgroundColor.slice();
@@ -79,18 +81,18 @@ class TeachersBySalary extends Component {
           {
             ...this.state.data.datasets[0],
             backgroundColor: backgroundColors,
-            borderColor: borderColors
-          }
-        ]
-      }
+            borderColor: borderColors,
+          },
+        ],
+      },
     });
-  }
+  };
 
   render() {
     return (
       <div id="report" className="report">
-        <div className='header'>
-          <h1 className='title'>Teachers By Salary Report</h1>
+        <div className="header">
+          <h1 className="title">Teachers By Salary Report</h1>
         </div>
         <DownloadPDF
           downloadFileName="Teachers by Salary"

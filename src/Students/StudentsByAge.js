@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Bar } from 'react-chartjs-2';
-import axios from 'axios';
-import DownloadPDF from '../helpers/DownloadPDF';
+import React, { Component } from "react";
+import { Bar } from "react-chartjs-2";
+import axios from "axios";
+import DownloadPDF from "../helpers/DownloadPDF";
 
 class StudentsByAge extends Component {
   state = {
@@ -9,7 +9,7 @@ class StudentsByAge extends Component {
       labels: [],
       datasets: [
         {
-          label: '# of Students',
+          label: "# of Students",
           data: [],
           backgroundColor: [],
           borderColor: [],
@@ -27,19 +27,21 @@ class StudentsByAge extends Component {
           },
         ],
       },
-    }
+    },
   };
 
   componentDidMount = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/v1/students-by-age');
+      const res = await axios.get(
+        "https://english-center.onrender.com/api/v1/students-by-age"
+      );
 
       this.generateBgColors(res.data.studentsByAge.length);
 
       let ages = this.state.data.labels.slice();
       let ageCounts = this.state.data.datasets[0].data.slice();
 
-      res.data.studentsByAge.forEach(student => {
+      res.data.studentsByAge.forEach((student) => {
         ages = [...ages, student._id];
         ageCounts = [...ageCounts, student.count];
         this.setState({
@@ -49,17 +51,17 @@ class StudentsByAge extends Component {
             datasets: [
               {
                 ...this.state.data.datasets[0],
-                data: ageCounts
-              }
-            ]
-          }
+                data: ageCounts,
+              },
+            ],
+          },
         });
       });
     } catch (error) {
       console.log(error);
-      alert('something went wrong, please try again later');
+      alert("something went wrong, please try again later");
     }
-  }
+  };
 
   generateBgColors = (i) => {
     let backgroundColors = this.state.data.datasets[0].backgroundColor.slice();
@@ -79,18 +81,18 @@ class StudentsByAge extends Component {
           {
             ...this.state.data.datasets[0],
             backgroundColor: backgroundColors,
-            borderColor: borderColors
-          }
-        ]
-      }
+            borderColor: borderColors,
+          },
+        ],
+      },
     });
-  }
+  };
 
   render() {
     return (
       <div id="report" className="report">
-        <div className='header'>
-          <h1 className='title'>Students By Ages Report</h1>
+        <div className="header">
+          <h1 className="title">Students By Ages Report</h1>
         </div>
         <DownloadPDF
           downloadFileName="Students by Age"

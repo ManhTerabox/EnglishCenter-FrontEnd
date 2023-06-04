@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Button,
   TextField,
@@ -6,14 +6,14 @@ import {
   Paper,
   Typography,
   Link,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import './Login.scss';
+import "./Login.scss";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { username: '', password: '', authflag: 1 };
+    this.state = { username: "", password: "", authflag: 1 };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -27,13 +27,16 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.state.username === 'admin@sms.com' && this.state.password === 'admin') {
-        localStorage.setItem('username', 'admin@sms.com');
-        localStorage.setItem('password', 'admin');
-        this.props.history.push('/students');
-        window.location.reload(false); 
+    if (
+      this.state.username === "admin@gmail.com" &&
+      this.state.password === "admin"
+    ) {
+      localStorage.setItem("username", "admin@gmail.com");
+      localStorage.setItem("password", "admin");
+      this.props.history.push("/students");
+      window.location.reload(false);
     } else {
-        alert('Incorrect Credntials!');
+      alert("Incorrect Credntials!");
     }
   }
 
